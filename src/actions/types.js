@@ -1,0 +1,3 @@
+export const GET_DEFAULT_DATA = 'GET_DEFAULT_DATA';
+export const SET_DEFAULT = 'SET_DEFAULT';
+export const GET_TARGET_DATA = 'GET_TARGET_DATA';
