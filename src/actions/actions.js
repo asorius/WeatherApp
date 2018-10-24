@@ -3,7 +3,7 @@ import Axios from 'axios';
 
 export const getDefaultData = creds => async dispatch => {
   const response = await Axios.get(
-    `http://api.openweathermap.org/data/2.5/forecast?id=${
+    `http://api.openweathermap.org/data/2.5/weather?q=${
       creds.default_city_id
     }&APPID=${creds.key}`
   );
@@ -24,5 +24,7 @@ export const getTargetData = ({ creds, target }) => {
   return {
     type: GET_TARGET_DATA
     // payload: response
+    //AIzaSyBJpOSfZ7ox4FZau_RaPCXtx3kJPy4Mmkc google key
+    // https://maps.googleapis.com/maps/api/place/autocomplete/json?input=kaun&&types=(cities)&key=AIzaSyBJpOSfZ7ox4FZau_RaPCXtx3kJPy4Mmkc
   };
 };
