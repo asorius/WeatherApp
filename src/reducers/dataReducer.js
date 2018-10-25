@@ -6,13 +6,13 @@ import {
 
 const initialState = {
   key: 'b127290105cc88e28234e1b21708f515',
-  default_city_id: '3333204',
+  default_city: 'stoke-on-trent',
   weatherData: {}
 };
 export default function(state = initialState, action) {
   switch (action.type) {
     case SET_DEFAULT:
-      return { ...state, default_city_id: action.payload };
+      return { ...state, default_city: action.payload };
     case GET_DEFAULT_DATA:
       return {
         ...state,

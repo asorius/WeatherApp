@@ -2,80 +2,98 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Data from './Data';
-import { getDefaultData } from '../actions/actions';
+import { getDefaultData, setDefault, getTargetData } from '../actions/actions';
 class Main extends Component {
   state = {
     typingTimeout: null,
-    text: ''
+    text: '',
+    preload: false
   };
   componentDidMount() {
-    let { key, default_city_id } = this.props.data;
+    let { key, default_city } = this.props.data;
     if (localStorage.getItem('default') !== null) {
-      default_city_id = localStorage.getItem('default');
+      default_city = localStorage.getItem('default');
     }
-    console.log({ key, default_city_id });
-    this.props.getDefaultData({ key, default_city_id });
+    this.props.getDefaultData({ key, default_city });
   }
-  setDefault = e => {
+  setDefaultFunc = e => {
     e.preventDefault();
     const value = document.querySelector('#default').value.toLowerCase();
     localStorage.setItem('default', value);
-    return { message: 'success' };
+    this.props.setDefault(value);
   };
-  autoSuggest = async e => {
+  autoLoad = async e => {
+    this.setState({ preload: !this.state.preload });
     const input = e.target.value;
     clearTimeout(this.state.typingTimeout);
     this.setState({
-      typingTimeout: setTimeout(this.callSearch, 1500),
-      text: input
+      typingTimeout: setTimeout(this.callSearch, 1000),
+      text: input,
+      preload: true
     });
   };
   callSearch = async () => {
-    const text = this.state.text;
+    const target = this.state.text;
+    if (target.length === 0) {
+      this.setState({ preload: !this.state.preload });
+      return;
+    }
     const { key } = this.props.data;
-    const response = await fetch(
-      `http://api.openweathermap.org/data/2.5/weather?q=${text}&APPID=${key}`
-    );
-    const responseData = await response.json();
-    responseData.message ? console.log('not found') : console.log(responseData);
-    //--------------Google places for drop down return CORB error....
-    // const key = 'AIzaSyBJpOSfZ7ox4FZau_RaPCXtx3kJPy4Mmkc';
-    // try {
-    //   const response = await axios({
-    //     method: 'get',
-    //     url: `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${text}&&types=(cities)&key=${key}`,
-    //     headers: {
-    //       'Access-Control-Allow-Origin': '*'
-    //     }
-    //   });
-    //   const list = response.data.map(res => res.description);
-    //   console.log(list);
-    // } catch (e) {
-    //   console.log(e);
-    // }
+    this.props.getTargetData({ key, target });
+    this.setState({ preload: !this.state.preload });
   };
 
   render() {
     const { weatherData } = this.props.data;
+    const { preload } = this.state;
     return (
-      <div className="container">
-        <input type="text" name="" id="default" placeholder="set default" />
-        <button type="submit" onClick={this.setDefault}>
-          set
-        </button>
+      <div className="container col s12">
+        <div className="defaultSetter row ">
+          <div className="col offset-s3">
+            <p>
+              Want to see a specific location everytime You come? Try setting a
+              default location!
+            </p>
+          </div>
+          <div className="row">
+            <div className="input-field col s4 offset-s4">
+              <input type="text" id="default" />
+              <label htmlFor="default">Enter location..</label>
+              <button
+                type="submit"
+                onClick={this.setDefaultFunc}
+                className="btn"
+              >
+                Set as Default
+              </button>
+            </div>
+          </div>
+        </div>
         <br />
-        <input
-          type="text"
-          name=""
-          id="search"
-          placeholder="search.."
-          autoComplete="off"
-          onChange={this.autoSuggest}
-        />
+        <div className="row">
+          <div className="input-field col s8 offset-s2">
+            <input
+              type="text"
+              id="search"
+              autoComplete="off"
+              onChange={this.autoLoad}
+            />
+            <label htmlFor="search">Search for a location..</label>
+          </div>
+        </div>
+
         {weatherData.cod === 200 ? (
-          <Data data={weatherData} />
+          <Data
+            data={weatherData}
+            error={{ error: false }}
+            preloader={{ show: preload }}
+          />
         ) : (
-          'Could not find anything....'
+          <Data
+            data={weatherData}
+            error={{ error: true }}
+            preloader={{ show: preload }}
+          />
         )}
       </div>
     );
@@ -83,10 +101,12 @@ class Main extends Component {
 }
 Main.propTypes = {
   data: PropTypes.object.isRequired,
-  getDefaultData: PropTypes.func.isRequired
+  getDefaultData: PropTypes.func.isRequired,
+  setDefault: PropTypes.func.isRequired,
+  getTargetData: PropTypes.func.isRequired
 };
 const mapStateToProps = state => ({ data: state.data });
 export default connect(
   mapStateToProps,
-  { getDefaultData }
+  { getDefaultData, setDefault, getTargetData }
 )(Main);
