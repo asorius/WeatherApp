@@ -6,7 +6,7 @@ import {
 
 const initialState = {
   key: 'b127290105cc88e28234e1b21708f515',
-  default_city: 'stoke-on-trent',
+  default_city: '',
   weatherData: {}
 };
 export default function(state = initialState, action) {
@@ -16,7 +16,8 @@ export default function(state = initialState, action) {
     case GET_DEFAULT_DATA:
       return {
         ...state,
-        weatherData: action.payload
+        weatherData: action.payload.current,
+        forecastData: action.payload.forecast
       };
     case GET_TARGET_DATA:
       return { ...state, weatherData: action.payload };
