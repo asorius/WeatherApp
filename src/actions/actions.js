@@ -41,7 +41,5 @@ export const getTargetData = ({ key, target }) => async dispatch => {
   dispatch({
     type: GET_TARGET_DATA,
     payload: { current: responseData, forecast: respFor }
-    //AIzaSyBJpOSfZ7ox4FZau_RaPCXtx3kJPy4Mmkc google key
-    // https://maps.googleapis.com/maps/api/place/autocomplete/json?input=kaun&&types=(cities)&key=AIzaSyBJpOSfZ7ox4FZau_RaPCXtx3kJPy4Mmkc
   });
 };
