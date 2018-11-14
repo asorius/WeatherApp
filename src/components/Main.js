@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import Data from './Data';
 import { getDefaultData, setDefault, getTargetData } from '../actions/actions';
 import DefaultSection from './DefaultSection';
-import Forecast from './Forecast';
 import Error from './Error';
 class Main extends Component {
   state = {
@@ -74,14 +73,11 @@ class Main extends Component {
             </div>
             <div className="col s12">
               {weatherData.cod === 200 ? (
-                <React.Fragment>
-                  <Data
-                    data={weatherData}
-                    forecast={forecastData}
-                    preloader={{ show: preload }}
-                  />
-                  <Forecast />
-                </React.Fragment>
+                <Data
+                  data={weatherData}
+                  forecast={forecastData}
+                  preloader={{ show: preload }}
+                />
               ) : (
                 <Error preloader={{ show: preload }} />
               )}

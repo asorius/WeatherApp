@@ -8,6 +8,8 @@ class Forecast extends Component {
     return (
       <div className="row ">
         <div className="container center">
+          <h5>12 Hour forecast:</h5>
+          <div class="divider" />
           <div className="row center forecast_container ">
             {detailedData.map((period, index) => {
               const time = period.dt_txt,

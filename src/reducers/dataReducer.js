@@ -20,7 +20,11 @@ export default function(state = initialState, action) {
         forecastData: action.payload.forecast
       };
     case GET_TARGET_DATA:
-      return { ...state, weatherData: action.payload };
+      return {
+        ...state,
+        weatherData: action.payload.current,
+        forecastData: action.payload.forecast
+      };
     default:
       return state;
   }

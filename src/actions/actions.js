@@ -29,13 +29,18 @@ export const getTargetData = ({ key, target }) => async dispatch => {
   const response = await fetch(
     `http://api.openweathermap.org/data/2.5/weather?q=${target}&APPID=${key}&units=metric`
   );
+  const responseForecast = await Axios.get(
+    `http://api.openweathermap.org/data/2.5/forecast?q=${target}&APPID=${key}&units=metric`
+  );
   let responseData = await response.json();
+  const respFor = await responseForecast.data;
+
   if (responseData.cod === '404') {
     responseData = { error: true };
   }
   dispatch({
     type: GET_TARGET_DATA,
-    payload: responseData
+    payload: { current: responseData, forecast: respFor }
     //AIzaSyBJpOSfZ7ox4FZau_RaPCXtx3kJPy4Mmkc google key
     // https://maps.googleapis.com/maps/api/place/autocomplete/json?input=kaun&&types=(cities)&key=AIzaSyBJpOSfZ7ox4FZau_RaPCXtx3kJPy4Mmkc
   });
