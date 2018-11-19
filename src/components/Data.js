@@ -22,8 +22,7 @@ class Data extends Component {
               Current Weather in {name},{list[country]}.
             </h3>
             <div className="details">
-              {weather} with temperature of {parseFloat(temp).toFixed(2)}
-              C.
+              {weather} with temperature of {Math.round(temp)} &#8451;.
             </div>
           </div>
         </div>

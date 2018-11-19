@@ -54,38 +54,45 @@ class Main extends Component {
 
   render() {
     const { weatherData, forecastData } = this.props.data;
+    console.log(weatherData);
     const { preload } = this.state;
-    return (
-      <div className="row ">
-        <DefaultSection defaultCity={this.props.data.default_city} />
-        <div className="mainSearch center col s9 ">
-          <div className="row s12 center">
-            <div className="input-field col s4 offset-s4">
-              <input
-                type="text"
-                id="search"
-                autoComplete="off"
-                onChange={this.autoLoad}
-              />
-              <label htmlFor="search">
-                Start typing to search for a location..
-              </label>
-            </div>
-            <div className="col s12">
-              {weatherData.cod === 200 ? (
-                <Data
-                  data={weatherData}
-                  forecast={forecastData}
-                  preloader={{ show: preload }}
+    if (weatherData.cod === 404) {
+      return <Error preloader={{ show: preload }} />;
+    } else {
+      return (
+        <div className="row ">
+          <div className="mainSearch center col s12 m10 offset-m1 l8 push-l3">
+            <div className="row s12 center ">
+              <div className="input-field col s10 offset-s1 l4 offset-l3">
+                <div className="divider" />
+
+                <input
+                  type="text"
+                  id="search"
+                  autoComplete="off"
+                  onChange={this.autoLoad}
                 />
-              ) : (
-                <Error preloader={{ show: preload }} />
-              )}
+                <label htmlFor="search">
+                  Start typing to search for a location..
+                </label>
+              </div>
+              <div className="col s12 ">
+                {weatherData.cod === 200 ? (
+                  <Data
+                    data={weatherData}
+                    forecast={forecastData}
+                    preloader={{ show: preload }}
+                  />
+                ) : (
+                  <Error preloader={{ show: preload }} />
+                )}
+              </div>
             </div>
           </div>
+          <DefaultSection defaultCity={this.props.data.default_city} />
         </div>
-      </div>
-    );
+      );
+    }
   }
 }
 Main.propTypes = {
