@@ -17,16 +17,29 @@ body {
   height: 75vh;
 } */
 .defaultSetter {
-  background-color: rgba(32, 32, 32, 0.521);
+  background-color: rgba(32, 32, 32, 0.877);
   -webkit-clip-path: polygon(0% 0%, 87% 0, 100% 50%, 87% 100%, 0% 100%);
   clip-path: polygon(0% 0%, 87% 0, 100% 50%, 87% 100%, 0% 100%);
 }
 .temp {
   height: 3em;
 }
+.error-card {
+  text-align: center;
+  width: 100%;
+  justify-content: center;
+  padding-bottom: 0.5em;
+}
 .singleCard {
-  height: 10em;
   margin: 0.5em;
+  border-radius: 5%;
+  padding: 0.5em;
+  border: 1px solid grey;
+  -webkit-box-shadow: 3px 4px 8px -1px #000000;
+  box-shadow: 3px 4px 8px -1px #000000;
+}
+.icon-img {
+  height: 3.5em;
 }
 
 @media only screen and (min-width: 670px) {
@@ -35,8 +48,4 @@ body {
     flex-direction: row;
     justify-content: center;
   }
-  /* .mycontainer {
-    width: 80%;
-    margin: 0;
-  } */
 }

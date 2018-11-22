@@ -18,11 +18,13 @@ class Data extends Component {
       <React.Fragment>
         <div className="row">
           <div className="data_container container">
-            <h3>
+            <h4>
               Current Weather in {name},{list[country]}.
-            </h3>
+            </h4>
             <div className="details">
-              {weather} with temperature of {Math.round(temp)} &#8451;.
+              <h5>
+                {weather} with temperature of {Math.round(temp)} &#8451;.
+              </h5>
             </div>
           </div>
         </div>

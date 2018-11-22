@@ -23,6 +23,7 @@ class Main extends Component {
     this.setState({ preload: !this.state.preload });
     const input = e.target.value;
     clearTimeout(this.state.typingTimeout);
+
     this.setState({
       typingTimeout: setTimeout(this.callSearch, 1000),
       text: input,
@@ -49,12 +50,12 @@ class Main extends Component {
       const { key } = this.props.data;
       this.props.getTargetData({ key, target });
       this.setState({ preload: !this.state.preload });
+      console.log('callsarch when is input');
     }
   };
 
   render() {
     const { weatherData, forecastData } = this.props.data;
-    console.log(weatherData);
     const { preload } = this.state;
     if (weatherData.cod === 404) {
       return <Error preloader={{ show: preload }} />;
@@ -71,6 +72,7 @@ class Main extends Component {
                   id="search"
                   autoComplete="off"
                   onChange={this.autoLoad}
+                  spellCheck="false"
                 />
                 <label htmlFor="search">
                   Start typing to search for a location..

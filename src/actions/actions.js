@@ -26,20 +26,23 @@ export const setDefault = location => dispatch => {
   });
 };
 export const getTargetData = ({ key, target }) => async dispatch => {
-  const response = await fetch(
-    `http://api.openweathermap.org/data/2.5/weather?q=${target}&APPID=${key}&units=metric`
-  );
-  const responseForecast = await Axios.get(
-    `http://api.openweathermap.org/data/2.5/forecast?q=${target}&APPID=${key}&units=metric`
-  );
-  let responseData = await response.json();
-  const respFor = await responseForecast.data;
-
-  if (responseData.cod === '404') {
-    responseData = { error: true };
+  try {
+    const response = await fetch(
+      `http://api.openweathermap.org/data/2.5/weather?q=${target}&APPID=${key}&units=metric`
+    );
+    const responseForecast = await Axios.get(
+      `http://api.openweathermap.org/data/2.5/forecast?q=${target}&APPID=${key}&units=metric`
+    );
+    const responseData = await response.json();
+    const respFor = await responseForecast.data;
+    dispatch({
+      type: GET_TARGET_DATA,
+      payload: { current: responseData, forecast: respFor }
+    });
+  } catch (e) {
+    dispatch({
+      type: GET_TARGET_DATA,
+      payload: { current: { e: 404 }, forecast: { e: 404 } }
+    });
   }
-  dispatch({
-    type: GET_TARGET_DATA,
-    payload: { current: responseData, forecast: respFor }
-  });
 };

@@ -17,10 +17,12 @@ class Forecast extends Component {
             {detailedData.map((period, index) => {
               const time = period.dt_txt,
                 temp = Math.round(period.main.temp),
-                weatherDescription = period.weather[0].description;
+                weatherDescription = period.weather[0].description,
+                icon = period.weather[0].icon;
+              let url = 'http://openweathermap.org/img/w/' + icon + '.png';
               return (
                 <div
-                  className="col center s10 offset-s1 m2 l2 teal white-text singleCard"
+                  className="col center s10 offset-s1 m2 l2 teal lighten-1 white-text singleCard"
                   key={index}
                 >
                   <div>{time.substring(0, time.length - 3)}</div>
@@ -28,6 +30,12 @@ class Forecast extends Component {
                     <h4>{temp} &#8451;</h4>
                   </div>
                   <div>{weatherDescription}</div>
+                  <div
+                    className="icon-img"
+                    // style={{ backgroundImage: `url(${url})` }}
+                  >
+                    <img className="responsive-img" src={url} alt="" />
+                  </div>
                 </div>
               );
             })}

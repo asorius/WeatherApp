@@ -26,6 +26,7 @@ class DefaultSection extends Component {
       this.setState({ show: 'added', currentDefault: value });
       setTimeout(() => {
         document.querySelector('#default').value = null;
+        document.querySelector('#default').blur();
 
         this.setState({ show: 'neither', found: false });
       }, 2000);
@@ -33,6 +34,8 @@ class DefaultSection extends Component {
       this.setState({ show: 'error' });
       setTimeout(() => {
         document.querySelector('#default').value = null;
+        document.querySelector('#default').blur();
+
         this.setState({ show: 'neither', found: false });
       }, 2000);
     }
@@ -57,7 +60,6 @@ class DefaultSection extends Component {
         `http://api.openweathermap.org/data/2.5/weather?q=${target.toLowerCase()}&APPID=${key}`
       );
       const responseJson = await response.json();
-      console.log(responseJson);
       if (responseJson.cod === 200) {
         this.setState({
           found: !this.state.found,
@@ -85,7 +87,7 @@ class DefaultSection extends Component {
       <div className="col s12 m10 l3 pull-l8">
         <div className="row  defaultSetter ">
           <div className="col s10 ">
-            <p className="center">
+            <p className="center white-text">
               Want to see a specific location everytime You come? Try setting a
               default location!
             </p>
@@ -94,21 +96,30 @@ class DefaultSection extends Component {
           <div className="col s12 ">
             <div className="row center ">
               <div className="input-field col s10 offset-s1 l8 offset-l2">
-                <input type="text" id="default" onChange={this.checkLocation} />
+                <input
+                  type="text"
+                  id="default"
+                  onChange={this.checkLocation}
+                  spellCheck="false"
+                />
                 <label htmlFor="default">Enter location..</label>
+
                 {this.state.show === 'error' ? (
-                  <i className="material-icons red-text darken-4 right">
-                    error_outline
-                  </i>
+                  <div className="error-card valign-wrapper red-text accent-1">
+                    <div>Not found! </div>
+                    <i className="material-icons red-text darken-4 ">
+                      error_outline
+                    </i>
+                  </div>
                 ) : null}
                 {this.state.show === 'added' ? (
-                  <div className="blue-text accent-1">
-                    <h6>City succesfully added!</h6>
-                    <i className="material-icons blue-text medium">done_all</i>
+                  <div className="green-text accent-1">
+                    <p>City succesfully added!</p>
+                    <i className="material-icons green-text medium">done_all</i>
                   </div>
                 ) : null}
                 {this.state.show === 'found' ? (
-                  <i className="material-icons yellow-text right">
+                  <i className="material-icons green-text right">
                     check_circle_outline
                   </i>
                 ) : null}
@@ -139,9 +150,9 @@ class DefaultSection extends Component {
                 )}
 
                 {defaultCity === '' ? null : (
-                  <p>
-                    Current default city:{' '}
-                    <span className="teal-text">
+                  <p className="grey-text lighten-5">
+                    Current default city :{' '}
+                    <span className="teal-text lighten-5">
                       {defaultCity.charAt(0).toUpperCase()}
                       {defaultCity.slice(1)}
                     </span>
