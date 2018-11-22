@@ -50,7 +50,6 @@ class Main extends Component {
       const { key } = this.props.data;
       this.props.getTargetData({ key, target });
       this.setState({ preload: !this.state.preload });
-      console.log('callsarch when is input');
     }
   };
 
