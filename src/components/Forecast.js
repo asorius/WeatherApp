@@ -19,7 +19,7 @@ class Forecast extends Component {
                 temp = Math.round(period.main.temp),
                 weatherDescription = period.weather[0].description,
                 icon = period.weather[0].icon;
-              let url = 'http://openweathermap.org/img/w/' + icon + '.png';
+              let url = 'https://openweathermap.org/img/w/' + icon + '.png';
               return (
                 <div
                   className="col center s10 offset-s1 m2 l2 teal lighten-1 white-text singleCard"
@@ -30,10 +30,7 @@ class Forecast extends Component {
                     <h4>{temp} &#8451;</h4>
                   </div>
                   <div>{weatherDescription}</div>
-                  <div
-                    className="icon-img"
-                    // style={{ backgroundImage: `url(${url})` }}
-                  >
+                  <div className="icon-img">
                     <img className="responsive-img" src={url} alt="" />
                   </div>
                 </div>

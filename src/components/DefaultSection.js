@@ -17,7 +17,7 @@ class DefaultSection extends Component {
     let value = document.querySelector('#default').value;
     let { key } = this.props.data;
     const response = await fetch(
-      `http://api.openweathermap.org/data/2.5/weather?q=${value.toLowerCase()}&APPID=${key}`
+      `https://api.openweathermap.org/data/2.5/weather?q=${value.toLowerCase()}&APPID=${key}`
     );
     const responseData = await response.json();
     if (responseData.cod === 200) {
@@ -57,7 +57,7 @@ class DefaultSection extends Component {
 
     if (target.length !== 0) {
       const response = await fetch(
-        `http://api.openweathermap.org/data/2.5/weather?q=${target.toLowerCase()}&APPID=${key}`
+        `https://api.openweathermap.org/data/2.5/weather?q=${target.toLowerCase()}&APPID=${key}`
       );
       const responseJson = await response.json();
       if (responseJson.cod === 200) {

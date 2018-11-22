@@ -3,12 +3,12 @@ import Axios from 'axios';
 
 export const getDefaultData = creds => async dispatch => {
   const response = await Axios.get(
-    `http://api.openweathermap.org/data/2.5/weather?q=${
+    `https://api.openweathermap.org/data/2.5/weather?q=${
       creds.default_city
     }&APPID=${creds.key}&units=metric`
   );
   const responseForecast = await Axios.get(
-    `http://api.openweathermap.org/data/2.5/forecast?q=${
+    `https://api.openweathermap.org/data/2.5/forecast?q=${
       creds.default_city
     }&APPID=${creds.key}&units=metric`
   );
@@ -28,10 +28,10 @@ export const setDefault = location => dispatch => {
 export const getTargetData = ({ key, target }) => async dispatch => {
   try {
     const response = await fetch(
-      `http://api.openweathermap.org/data/2.5/weather?q=${target}&APPID=${key}&units=metric`
+      `https://api.openweathermap.org/data/2.5/weather?q=${target}&APPID=${key}&units=metric`
     );
     const responseForecast = await Axios.get(
-      `http://api.openweathermap.org/data/2.5/forecast?q=${target}&APPID=${key}&units=metric`
+      `https://api.openweathermap.org/data/2.5/forecast?q=${target}&APPID=${key}&units=metric`
     );
     const responseData = await response.json();
     const respFor = await responseForecast.data;
