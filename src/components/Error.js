@@ -5,7 +5,9 @@ export default class Error extends Component {
   render() {
     const { preloader } = this.props;
 
-    if (preloader.show === true) {
+    if (preloader.initialShow) {
+      return null;
+    } else if (preloader.show === true) {
       return <Preloader />;
     } else {
       return <div className="center">Location not found.. </div>;

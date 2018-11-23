@@ -9,18 +9,22 @@ class Main extends Component {
   state = {
     typingTimeout: null,
     text: '',
-    preload: false
+    preload: false,
+    initialShow: true
   };
   componentDidMount() {
     let { key, default_city } = this.props.data;
+    // if there is data in local storage get it , set defaultset to true in component state, set it in redux store and run api call.
     if (localStorage.getItem('default') !== null) {
       default_city = localStorage.getItem('default');
+      this.setState({ initialShow: false });
+      this.props.setDefault(default_city);
+      this.props.getDefaultData({ key, default_city });
     }
-    this.props.setDefault(default_city);
-    this.props.getDefaultData({ key, default_city });
+    return;
   }
   autoLoad = async e => {
-    this.setState({ preload: !this.state.preload });
+    this.setState({ preload: !this.state.preload, initialShow: false });
     const input = e.target.value;
     clearTimeout(this.state.typingTimeout);
 
@@ -32,30 +36,36 @@ class Main extends Component {
   };
   callSearch = async () => {
     const target = this.state.text;
+    // if input is empty, check if there is default location set by user, if yes,show default, if no, show null
     if (target.length === 0) {
+      //check localstorage
       let { key, default_city } = this.props.data;
       if (localStorage.getItem('default') !== null) {
         default_city = localStorage.getItem('default');
+        this.setState({
+          typingTimeout: setTimeout(
+            this.props.getDefaultData({ key, default_city }),
+            1000
+          ),
+          text: '',
+          preload: true
+        });
+        this.setState({ preload: !this.state.preload });
+      } else {
+        this.setState({ initialShow: true });
       }
-      this.setState({
-        typingTimeout: setTimeout(
-          this.props.getDefaultData({ key, default_city }),
-          1000
-        ),
-        text: '',
-        preload: true
-      });
-      this.setState({ preload: !this.state.preload });
     } else {
       const { key } = this.props.data;
       this.props.getTargetData({ key, target });
-      this.setState({ preload: !this.state.preload });
+      this.setState({
+        preload: !this.state.preload
+      });
     }
   };
 
   render() {
     const { weatherData, forecastData } = this.props.data;
-    const { preload } = this.state;
+    const { preload, initialShow } = this.state;
     if (weatherData.cod === 404) {
       return <Error preloader={{ show: preload }} />;
     } else {
@@ -85,7 +95,9 @@ class Main extends Component {
                     preloader={{ show: preload }}
                   />
                 ) : (
-                  <Error preloader={{ show: preload }} />
+                  <Error
+                    preloader={{ show: preload, initialShow: initialShow }}
+                  />
                 )}
               </div>
             </div>

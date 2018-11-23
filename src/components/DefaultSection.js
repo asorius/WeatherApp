@@ -67,16 +67,15 @@ class DefaultSection extends Component {
         });
         setTimeout(() => {
           this.setState({ show: 'neither' });
-        }, 2000);
+        }, 1000);
       } else {
         this.setState({
           found: false,
           show: 'error'
         });
         setTimeout(() => {
-          document.querySelector('#default').value = null;
           this.setState({ show: 'neither' });
-        }, 2000);
+        }, 1000);
       }
     }
   };

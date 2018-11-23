@@ -1,48 +1,39 @@
 import { GET_DEFAULT_DATA, SET_DEFAULT, GET_TARGET_DATA } from './types';
-import Axios from 'axios';
 
+const APICalls = async (target, key) => {
+  try {
+    const responseCurrent = await fetch(
+      `https://api.openweathermap.org/data/2.5/weather?q=${target}&APPID=${key}&units=metric`
+    );
+    const responseForecast = await fetch(
+      `https://api.openweathermap.org/data/2.5/forecast?q=${target}&APPID=${key}&units=metric`
+    );
+    const current = await responseCurrent.json();
+    const forecast = await responseForecast.json();
+    return { current, forecast };
+  } catch (e) {
+    return { error: true };
+  }
+};
 export const getDefaultData = creds => async dispatch => {
-  const response = await Axios.get(
-    `https://api.openweathermap.org/data/2.5/weather?q=${
-      creds.default_city
-    }&APPID=${creds.key}&units=metric`
-  );
-  const responseForecast = await Axios.get(
-    `https://api.openweathermap.org/data/2.5/forecast?q=${
-      creds.default_city
-    }&APPID=${creds.key}&units=metric`
-  );
-  const responseData = await response.data;
-  const respFor = await responseForecast.data;
+  const response = await APICalls(creds.default_city, creds.key);
   dispatch({
     type: GET_DEFAULT_DATA,
-    payload: { current: responseData, forecast: respFor }
+    payload: { current: response.current, forecast: response.forecast }
   });
 };
+
 export const setDefault = location => dispatch => {
   dispatch({
     type: SET_DEFAULT,
     payload: location
   });
 };
+
 export const getTargetData = ({ key, target }) => async dispatch => {
-  try {
-    const response = await fetch(
-      `https://api.openweathermap.org/data/2.5/weather?q=${target}&APPID=${key}&units=metric`
-    );
-    const responseForecast = await Axios.get(
-      `https://api.openweathermap.org/data/2.5/forecast?q=${target}&APPID=${key}&units=metric`
-    );
-    const responseData = await response.json();
-    const respFor = await responseForecast.data;
-    dispatch({
-      type: GET_TARGET_DATA,
-      payload: { current: responseData, forecast: respFor }
-    });
-  } catch (e) {
-    dispatch({
-      type: GET_TARGET_DATA,
-      payload: { current: { e: 404 }, forecast: { e: 404 } }
-    });
-  }
+  const response = await APICalls(target, key);
+  dispatch({
+    type: GET_TARGET_DATA,
+    payload: { current: response.current, forecast: response.forecast }
+  });
 };
