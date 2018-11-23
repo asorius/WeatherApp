@@ -10,7 +10,7 @@ export default class Error extends Component {
     } else if (preloader.show === true) {
       return <Preloader />;
     } else {
-      return <div className="center">Location not found.. </div>;
+      return <div className="center red-text">Location not found... </div>;
     }
   }
 }
